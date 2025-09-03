@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center p-6">
+    <div class="w-full max-w-2xl">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold">Your Tasks</h1>
+            <form action="/logout" method="get">
+                <button class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded">Logout</button>
+            </form>
+        </div>
+
+        <form action="/add" method="post" class="flex gap-2 mb-4">
+            <input type="text" name="task" placeholder="New Task" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Add</button>
+        </form>
+
+        <form action="/home" method="post" class="mb-4">
+            <input type="text" name="search" placeholder="Search tasks..." class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+        </form>
+
+        {% if tasks %}
+            <ul class="space-y-2">
+                {% for task in tasks %}
+                    <li class="flex items-center justify-between bg-gray-800 p-4 rounded shadow">
+                        <form action="/toggle/{{ loop.index0 }}" method="post">
+                            <button class="text-left">
+                                <span class="{% if task.done %}line-through text-gray-400{% endif %}">
+                                    {{ task.text }}
+                                </span>
+                            </button>
+                        </form>
+                        <form action="/delete/{{ loop.index0 }}" method="post">
+                            <button class="text-red-500 hover:text-red-600">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+            <form action="/clear" method="post" class="mt-6 text-center">
+                <button class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded">Clear Completed</button>
+            </form>
+        {% else %}
+            <p class="text-gray-400 mt-6 text-center">No tasks found 😴</p>
+        {% endif %}
+    </div>
+</body>
+</html>

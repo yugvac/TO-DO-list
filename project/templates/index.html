@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h3>Welcome, {{ user }}</h3>
+    <form method="POST" action="/add" class="d-flex my-3">
+        <input name="task" class="form-control me-2" placeholder="New Task" required>
+        <button class="btn btn-primary">Add</button>
+    </form>
+    <ul class="list-group">
+        {% for t in tasks %}
+        <li class="list-group-item d-flex justify-content-between">
+            <span style="text-decoration: {{ 'line-through' if t.done else 'none' }};">
+                {{ t.task }}
+            </span>
+            <div>
+                <a href="/toggle/{{ loop.index0 }}" class="btn btn-sm btn-outline-success">✔</a>
+                <a href="/delete/{{ loop.index0 }}" class="btn btn-sm btn-outline-danger">✖</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="/logout" class="btn btn-warning mt-3">Logout</a>
+</div>
+</body>
+</html>
